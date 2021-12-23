@@ -1,6 +1,8 @@
-# TempWorkspace
+# MaskChat
 
 This project was generated using [Nx](https://nx.dev).
+
+Start dev env with : `npx nx run-many --target=serve --all`
 
 <p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
 

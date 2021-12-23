@@ -1,5 +1,5 @@
 {
-  "npmScope": "temp-workspace",
+  "npmScope": "maskchat",
   "affected": {
     "defaultBase": "main"
   },
