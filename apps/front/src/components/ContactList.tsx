@@ -33,14 +33,13 @@ export default function ContactList() {
 
   useEffect(() => {
     if (!account) return;
-    //TODO: REPLACE PLACEHOLDER
-    axios.get(`http://localhost:3001/message/contacts?address=${account}`).then(res => {
+    axios.get(`http://localhost:3001/session/contacts?address=${account}`).then(res => {
       setContacts(
         res.data.map((ctc: any) => {
           console.log(ctc);
           return {
-            address: ctc._id,
-            sessEncoded: ctc.key
+            address: ctc.receiver,
+            sessEncoded: ctc.sessionKey
           };
         })
       );
