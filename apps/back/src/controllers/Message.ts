@@ -2,13 +2,12 @@ import { Request, Response } from 'express';
 import {
   getContactsOf,
   getMessages as getModelMessages,
-  addMessage as addModelMessage,
+  addMessage as addModelMessage
 } from '../models/Message';
 
 export const getContacts = async (req: Request, res: Response) => {
   const { address } = req.query;
-  if (!address || typeof address !== 'string')
-    return res.json({ error: 'Address is undefinbed' });
+  if (!address || typeof address !== 'string') return res.json({ error: 'Address is undefinbed' });
 
   try {
     const dbRes = await getContactsOf(address);
@@ -33,11 +32,7 @@ export const getMessages = async (req: Request, res: Response) => {
 
 export const addMessage = async (req: Request, res: Response) => {
   const { sender, receiver, message } = req.body;
-  if (
-    typeof sender !== 'string' ||
-    typeof receiver !== 'string' ||
-    typeof message !== 'string'
-  )
+  if (typeof sender !== 'string' || typeof receiver !== 'string' || typeof message !== 'string')
     return res.json({ error: 'Address or message is undefinbed' });
   try {
     await addModelMessage(sender, receiver, message);

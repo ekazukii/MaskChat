@@ -4,8 +4,7 @@ import { addPublicKey, getPublicKey } from '../models/Address';
 export const addAddress = async (req: Request, res: Response) => {
   console.log(req.body);
   const { address, publicKey } = req.body;
-  if (!address || !publicKey)
-    return res.json({ error: 'Address or publicKey undefined' });
+  if (!address || !publicKey) return res.json({ error: 'Address or publicKey undefined' });
 
   try {
     await addPublicKey(address, publicKey);
