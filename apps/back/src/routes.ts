@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { addAddress, getPublic } from './controllers/Address';
 import { addMessage, getContacts, getMessages } from './controllers/Message';
-import { addSession, getSession } from './controllers/Session';
+import { addSession, getSession, getContacts as getSessionContacts } from './controllers/Session';
 
 const messageRouter = Router();
 const addressRouter = Router();
@@ -50,6 +50,9 @@ messageRouter.post('/', addMessage);
  * @apiSuccess {string} contacts.key SessionKey of the conversation
  *
  * @apiError {string} error Error message
+ *
+ * @apiDeprecated Use now (#Session:GetSessionContacts).
+ * This method will omit all contacts that have not yet sent a message to each other
  */
 messageRouter.get('/contacts', getContacts);
 
@@ -91,6 +94,21 @@ addressRouter.post('/', addAddress);
  * @apiError {string} error Error message
  */
 sessionRouter.get('/', getSession);
+
+/**
+ * @api {get} /session/contacts Request all contacts of an Ethereum address
+ * @apiName GetSessionContacts
+ * @apiGroup Session
+ *
+ * @apiQuery {string} address ETH Address
+ *
+ * @apiSuccess {Object[]} contacts JSON Object representing a contact
+ * @apiSuccess {string} contacts.receiver Contacts's ETH Address
+ * @apiSuccess {string} contacts.sessionKey SessionKey of the conversation
+ *
+ * @apiError {string} error Error message
+ */
+sessionRouter.get('/contacts', getSessionContacts);
 
 /**
  * @api {post} /session Set session key of conversation between two Ethereum Address
