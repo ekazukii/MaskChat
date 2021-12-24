@@ -22,31 +22,43 @@ export const getMessages = (addr1: ETHAddress, addr2: ETHAddress) => {
     .find({
       $and: [
         {
-          $or: [{ sender: addr1 }, { receiver: addr1 }],
+          $or: [{ sender: addr1 }, { receiver: addr1 }]
         },
         {
-          $or: [{ sender: addr2 }, { receiver: addr2 }],
-        },
-      ],
+          $or: [{ sender: addr2 }, { receiver: addr2 }]
+        }
+      ]
     })
     .toArray();
 };
 
-export const addMessage = (
-  sender: ETHAddress,
-  receiver: ETHAddress,
-  message: string
-) => {
+export const addMessage = (sender: ETHAddress, receiver: ETHAddress, message: string) => {
   if (!collection) return Promise.reject('DB Not connected');
   if (!isAddress(sender)) return Promise.reject('Sender address is not valid');
-  if (!isAddress(receiver))
-    return Promise.reject('Receiver address is not valid');
+  if (!isAddress(receiver)) return Promise.reject('Receiver address is not valid');
 
   return collection.insertOne({ sender, receiver, message });
 };
 
 export const removeMessage = (id: any) => {
   //TODO: Query DB
+};
+
+export const removeConversation = (addr1: ETHAddress, addr2: ETHAddress) => {
+  if (!collection) return Promise.reject('DB Not connected');
+  if (!isAddress(addr1)) return Promise.reject('Sender address is not valid');
+  if (!isAddress(addr2)) return Promise.reject('Receiver address is not valid');
+
+  return collection.deleteMany({
+    $and: [
+      {
+        $or: [{ sender: addr1 }, { receiver: addr1 }]
+      },
+      {
+        $or: [{ sender: addr2 }, { receiver: addr2 }]
+      }
+    ]
+  });
 };
 
 export const getContactsOf = async (address: ETHAddress) => {
@@ -59,56 +71,56 @@ export const getContactsOf = async (address: ETHAddress) => {
         $match: {
           $or: [
             {
-              receiver: address,
+              receiver: address
             },
             {
-              sender: address,
-            },
-          ],
-        },
+              sender: address
+            }
+          ]
+        }
       },
       {
         $addFields: {
           contact: {
             $cond: [
               {
-                $eq: [address, '$sender'],
+                $eq: [address, '$sender']
               },
               '$receiver',
-              '$sender',
-            ],
-          },
-        },
+              '$sender'
+            ]
+          }
+        }
       },
       {
         $group: {
-          _id: '$contact',
-        },
+          _id: '$contact'
+        }
       },
       {
         $lookup: {
           from: 'session',
           localField: '_id',
           foreignField: 'receiver',
-          as: 'public',
-        },
+          as: 'public'
+        }
       },
       {
         $unwind: {
           path: '$public',
-          preserveNullAndEmptyArrays: false,
-        },
+          preserveNullAndEmptyArrays: false
+        }
       },
       {
         $set: {
-          key: '$public.sessionKey',
-        },
+          key: '$public.sessionKey'
+        }
       },
       {
         $project: {
-          public: 0,
-        },
-      },
+          public: 0
+        }
+      }
     ])
     .toArray();
 };

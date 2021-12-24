@@ -17,7 +17,7 @@ client.connect().then(() => {
   const db = client.db('test');
   collection = db.collection('session');
 
-  collection.createIndex({ sender: 1 });
+  collection.createIndex({ sender: 1, receiver: 1 }, { unique: true, name: 'session' });
 });
 
 export const addSessionKey = async (
@@ -27,21 +27,34 @@ export const addSessionKey = async (
   receiverKey: string
 ) => {
   if (!collection) return Promise.reject('DB Not connected');
-  collection.insertOne({ sender, receiver, sessionKey: senderKey });
-  collection.insertOne({
+
+  await collection.insertOne({ sender, receiver, sessionKey: senderKey });
+  await collection.insertOne({
     sender: receiver,
     receiver: sender,
-    sessionKey: receiverKey,
+    sessionKey: receiverKey
   });
+
+  return true;
 };
 
-export const getSessionKey = async (
-  sender: ETHAddress,
-  receiver: ETHAddress
-) => {
+export const getSessionKey = async (sender: ETHAddress, receiver: ETHAddress) => {
   if (!collection) return Promise.reject('DB Not connected');
-  return collection.findOne(
-    { sender, receiver },
-    { projection: { sessionKey: 1 } }
-  );
+  return collection.findOne({ sender, receiver }, { projection: { sessionKey: 1 } });
+};
+
+export const removeSessionKey = async (sender: ETHAddress, receiver: ETHAddress) => {
+  if (!collection) return Promise.reject('DB Not connected');
+
+  await collection.deleteOne({ sender, receiver });
+  await collection.deleteOne({ receiver: sender, sender: receiver });
+
+  return true;
+};
+export const getSessionsOf = async (address: ETHAddress) => {
+  if (!collection) return Promise.reject('DB Not connected');
+
+  return collection
+    .find({ sender: address }, { projection: { receiver: 1, sessionKey: 1 } })
+    .toArray();
 };

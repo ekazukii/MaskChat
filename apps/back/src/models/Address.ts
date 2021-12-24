@@ -12,12 +12,17 @@ client.connect().then(() => {
   collection.createIndex({ address: 1 }, { unique: true });
 });
 
-export const addPublicKey = async (address: ETHAddress, pubKey: PublicKey) => {
+export const addPublicKey = (address: ETHAddress, pubKey: PublicKey) => {
   if (!collection) return Promise.reject('DB Not connected');
   return collection.insertOne({ address, pubKey });
 };
 
-export const getPublicKey = async (address: ETHAddress) => {
+export const removePublicKey = (address: ETHAddress) => {
+  if (!collection) return Promise.reject('DB Not connected');
+  return collection.deleteOne({ address });
+};
+
+export const getPublicKey = (address: ETHAddress) => {
   if (!collection) return Promise.reject('DB Not connected');
   return collection.findOne({ address }, { projection: { pubKey: 1 } });
 };
