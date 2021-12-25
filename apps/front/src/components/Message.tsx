@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { useContact } from '../hooks/useContact';
-import { DBMessage } from '../hooks/useDatabase';
-import { useDecryptedMessage } from '../hooks/useWallet';
 import { MessageType } from './Conversation';
 import CryptoJS from 'crypto-js';
 

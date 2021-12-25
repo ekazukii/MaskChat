@@ -4,8 +4,6 @@ import { useState, KeyboardEvent, useContext, SyntheticEvent } from 'react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { useContact } from '../hooks/useContact';
-import { encodeMessage } from '../hooks/useWallet';
-import { ContactType } from './ContactList';
 import CryptoJS from 'crypto-js';
 
 const StyledContainer = styled.div`
@@ -84,11 +82,7 @@ export default function SendMessage() {
 
   return (
     <StyledContainer>
-      <StyledInput
-        placeholder="Message"
-        onChange={e => setMessage(e.target.value)}
-        onKeyDown={keyDown}
-      />
+      <input placeholder="Message" onChange={e => setMessage(e.target.value)} onKeyDown={keyDown} />
       <StyledSend onClick={send}>⬆</StyledSend>
     </StyledContainer>
   );

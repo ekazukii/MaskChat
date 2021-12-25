@@ -2,7 +2,6 @@ import { useWeb3React } from '@web3-react/core';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useContact } from '../hooks/useContact';
 import AddContact from './AddContact';
 import Contact from './Contact';
 

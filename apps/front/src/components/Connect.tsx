@@ -7,7 +7,6 @@ const injected = new InjectedConnector({});
 
 export default function Connect() {
   let { active, activate, account, library } = useWeb3React();
-  let WB = useWeb3React();
   useEffect(() => {
     const connect = async () => {
       try {
@@ -28,7 +27,6 @@ export default function Connect() {
             address: account,
             publicKey: publicKey
           });
-          console.log('res du post la le reuf', res);
         }
       } catch (error) {
         toast.error("Can't connect to server");
@@ -38,10 +36,9 @@ export default function Connect() {
     if (!active) {
       connect();
     } else {
-      console.log('frerot maybe ???');
       checkPubKey();
     }
-  }, [active]);
+  }, [active, account, activate, library]);
 
   return <></>;
 }

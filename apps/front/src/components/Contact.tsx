@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ContactType } from './ContactList';
 import Blockies from 'react-blockies';
-import { StyledEllipsisP, LeftDiv } from './Styled';
+import { StyledEllipsisP } from './Styled';
 import { useContact } from '../hooks/useContact';
 import { useEffect, useState } from 'react';
 
