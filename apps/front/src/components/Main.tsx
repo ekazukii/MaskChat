@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Conversation from './Conversation';
 import Navbar from './Navbar';
-import SendMessageStyle from './SendMessageStyle';
+import SendMessageStyle from './SendMessage';
 
 const StyledContainer = styled.div`
   height: 100vh;

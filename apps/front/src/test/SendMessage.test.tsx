@@ -1,4 +1,4 @@
-import SendMessage from '../components/SendMessageStyle';
+import SendMessage from '../components/SendMessage';
 import * as contactHook from '../hooks/useContact';
 import { ContactType } from '../components/ContactList';
 import { IContactContext } from '../hooks/useContact';
